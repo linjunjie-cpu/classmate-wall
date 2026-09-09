@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="深圳技术大学 · 2026级机械一班破冰用的同学名片墙：全班同学填写兴趣与自我介绍，互相认识。">
+  <title>深圳技术大学 · 机械一班名片墙</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========== 顶部横幅 ========== -->
+  <header class="hero">
+    <div class="hero-logo" id="heroLogo" title="深圳技术大学校徽（可拖拽移动，双击复位）">
+      <img src="images/sztu.png" alt="深圳技术大学校徽" draggable="false">
+    </div>
+
+    <div class="hero-inner">
+      <span class="mode-badge" id="modeBadge">演示模式</span>
+      <h1 id="pageTitle">深圳技术大学</h1>
+      <p class="subtitle" id="pageSubtitle">机械一班自己的名片墙</p>
+      <p class="class-label" id="classLabel">2026级机械一班</p>
+
+      <div class="progress-wrap">
+        <div class="progress-info">
+          <span id="countText">已认识 0 位同学</span>
+          <span id="targetText"></span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+
+      <div class="hero-actions">
+        <button type="button" class="btn btn-primary" data-goto="form">✏️ 填写我的名片</button>
+        <button type="button" class="btn btn-ghost" id="btnRandom">🎲 认识一下</button>
+        <button type="button" class="btn btn-ghost" id="btnShare">🔗 分享给同学</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== 工具栏 ========== -->
+  <nav class="toolbar">
+    <div class="toolbar-inner">
+      <div class="tabs">
+        <button type="button" class="tab active" data-tab="wall">名片墙<span class="num" id="wallCount"></span></button>
+        <button type="button" class="tab" data-tab="form">填写资料</button>
+      </div>
+      <input type="text" class="search" id="search" placeholder="搜索姓名 / 昵称 / 家乡 / 兴趣…" autocomplete="off">
+    </div>
+  </nav>
+
+  <main>
+    <!-- ========== 名片墙 ========== -->
+    <section id="wall" class="view active">
+      <div class="section-head">
+        <h2>🎈 同学名片墙</h2>
+        <span class="note">点击任意名片可查看完整介绍</span>
+      </div>
+      <div class="wall-tools">
+        <span class="known-pill" id="knownPill">🧭 我认识了 <span class="pill-num" id="knownNum">0</span> / <span id="knownTotal">40</span> 位同学</span>
+        <span class="tools-spacer"></span>
+        <button type="button" class="btn btn-soft btn-sm" id="btnEditMy">✏️ 修改我的名片</button>
+      </div>
+      <div id="grid" class="grid"></div>
+      <div id="emptyState" class="empty hidden">
+        <div class="big">🌱</div>
+        <p id="emptyText">还没有人填写，来做第一个吧！</p>
+        <p style="margin-top:14px"><button type="button" class="btn btn-primary" data-goto="form">✏️ 我来填写</button></p>
+      </div>
+    </section>
+
+    <!-- ========== 填写表单 ========== -->
+    <section id="form" class="view">
+      <div class="form-layout">
+        <div>
+          <div class="form-card">
+            <h2>填写我的名片</h2>
+            <p class="form-sub">花两分钟介绍一下自己，让全班同学更快认识你～</p>
+
+            <form id="classForm" novalidate>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="f_name">姓名<span class="req">*</span></label>
+                  <input type="text" id="f_name" maxlength="40" placeholder="你的真实姓名" autocomplete="name">
+                </div>
+                <div class="field">
+                  <label for="f_nickname">昵称 / 称呼</label>
+                  <input type="text" id="f_nickname" maxlength="40" placeholder="大家怎么称呼你（可留空）" autocomplete="nickname">
+                </div>
+                <div class="field">
+                  <label for="f_hometown">家乡</label>
+                  <input type="text" id="f_hometown" maxlength="60" placeholder="例如：广东 · 深圳">
+                </div>
+
+                <div class="field span2"><div class="fun-head">🎨 趣味小档案（选填，让同学更快记住你）</div></div>
+                <div class="field">
+                  <label for="f_mbti">MBTI</label>
+                  <select id="f_mbti">
+                    <option value="">没测过 / 保密</option>
+                    <option>INTJ</option><option>INTP</option><option>ENTJ</option><option>ENTP</option>
+                    <option>INFJ</option><option>INFP</option><option>ENFJ</option><option>ENFP</option>
+                    <option>ISTJ</option><option>ISFJ</option><option>ESTJ</option><option>ESFJ</option>
+                    <option>ISTP</option><option>ISFP</option><option>ESTP</option><option>ESFP</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="f_catchphrase">口头禅</label>
+                  <input type="text" id="f_catchphrase" maxlength="40" placeholder="例如：绝了 / 问题不大">
+                </div>
+                <div class="field span2">
+                  <label for="f_hiddenSkill">隐藏技能 / 想被发现的才华</label>
+                  <input type="text" id="f_hiddenSkill" maxlength="80" placeholder="例如：会吹口哨、单手转书、一分钟吃完一碗面">
+                </div>
+
+                <div class="field span2">
+                  <label for="f_interests">兴趣爱好<span class="req">*</span></label>
+                  <input type="text" id="f_interests" maxlength="200" placeholder="用逗号或顿号分隔，例如：篮球、吉他、摄影、追剧">
+                  <p class="hint">建议填 2~5 个，写得太“大众”反而不好找同好，来点具体的！</p>
+                </div>
+
+                <div class="field span2">
+                  <label for="f_intro">一句话介绍自己 / 想对同学说的话<span class="req">*</span></label>
+                  <textarea id="f_intro" maxlength="500" placeholder="例如：你好呀，我是来自 xx 的 xx，希望以后能和大家一起…"></textarea>
+                </div>
+
+                <div class="field span2" id="contactField">
+                  <label for="f_contact">联系方式（选填，仅本班可见）</label>
+                  <input type="text" id="f_contact" maxlength="120" placeholder="例如：电话号码/QQ">
+                  <p class="hint">⚠️ 建议只填电话号码或 QQ，不要填身份证、银行卡、密码等敏感信息。</p>
+                </div>
+
+                <div class="field span2">
+                  <label>头像（选填）</label>
+                  <div class="avatar-picker">
+                    <div class="avatar-preview" id="avatarPreview">👤</div>
+                    <div class="avatar-buttons">
+                      <label class="btn btn-soft btn-sm" for="avatarInput">📷 上传照片</label>
+                      <input type="file" id="avatarInput" accept="image/*" hidden>
+                      <button type="button" class="btn btn-danger-ghost hidden" id="avatarClear">🧼 用默认头像</button>
+                      <p class="hint" id="avatarHint">可以传照片，也可以从下面选个表情；都不选就用名字首字。</p>
+                    </div>
+                  </div>
+                  <div class="emoji-row">
+                    <span class="emoji-label">选个表情：</span>
+                    <div class="emoji-grid" id="avatarEmojiGrid"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="formSubmit">🚀 提交名片</button>
+                <button type="button" class="btn btn-soft" data-goto="wall">先看看名片墙</button>
+              </div>
+              <p class="error-msg" id="formError"></p>
+            </form>
+
+            <div class="form-edit-link">
+              已经填过？<button type="button" id="formEditLink">点这里修改 / 删除我的名片</button>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="side-card">
+            <h3>📌 填写说明</h3>
+            <p>这个平台是开学破冰用的，帮助全班同学互相认识。所有内容<b>全班公开可见</b>。</p>
+            <ul style="padding-left:18px;margin:8px 0;font-size:13.5px;color:#4b5169">
+              <li>带 <span style="color:#dc2626">*</span> 的是必填项</li>
+              <li>内容尽量真实、友善</li>
+              <li>预计保留约 1 个月，之后会整体删除</li>
+            </ul>
+            <div class="tip-highlight" style="margin-top:12px">
+              <b>🔒 隐私提醒：</b>联系方式会展示给全班，建议只留电话号码或 QQ；不要填写身份证号、住址门牌号、银行卡等敏感信息。
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== 底部 ========== -->
+  <footer>
+    <p class="footer-note">💡 本页面仅用于本班开学破冰，数据保留约一个月后将整体删除。</p>
+    <p>
+      <button type="button" class="admin-link" id="btnAdmin">⚙️ 管理员入口</button>
+      <button type="button" class="btn btn-danger-ghost hidden" id="demoReset">恢复演示示例数据</button>
+    </p>
+  </footer>
+
+  <!-- ========== 名片详情弹窗 ========== -->
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="名片详情">
+      <button type="button" class="modal-close" data-close="modalBackdrop" aria-label="关闭">✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ========== 保存修改码弹窗 ========== -->
+  <div class="modal-backdrop hidden" id="codeBackdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="保存修改码">
+      <button type="button" class="modal-close" data-close="codeBackdrop" aria-label="关闭">✕</button>
+      <div class="modal-h center">✅ 名片已上墙！</div>
+      <p class="center" style="font-size:14px;color:#454b66">这是你专属的「修改码」，之后修改 / 删除名片都要用到它 👇</p>
+      <div class="code-box"><div class="code-big" id="savedCode"></div></div>
+      <div class="actions-row">
+        <button type="button" class="btn btn-primary" id="copyCodeBtn">📋 复制修改码</button>
+        <button type="button" class="btn btn-soft" data-close="codeBackdrop">我知道了</button>
+      </div>
+      <p class="code-note center">同一台设备会自动记住；换设备或清缓存时才需要手动输入修改码。</p>
+    </div>
+  </div>
+
+  <!-- ========== 分享 / 二维码弹窗 ========== -->
+  <div class="modal-backdrop hidden" id="shareBackdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="分享给同学">
+      <button type="button" class="modal-close" data-close="shareBackdrop" aria-label="关闭">✕</button>
+      <div class="modal-h center">📢 把名片墙分享给全班</div>
+      <div class="qr-box" id="qrBox"><p class="qr-fallback" id="qrFallback">二维码生成中…</p></div>
+      <p class="center code-note" id="shareHint">手机扫一扫即可打开填写，也可以直接把链接发到班级群</p>
+      <div class="share-link-row">
+        <input type="text" id="shareLink" readonly>
+        <button type="button" class="btn btn-primary btn-sm copy-btn" id="copyLinkBtn">复制链接</button>
+      </div>
+      <p class="code-note center" id="shareDemoNote">演示模式下二维码指向本机页面，仅供查看效果；正式部署后自动变成真实网址。</p>
+    </div>
+  </div>
+
+  <!-- ========== 修改 / 删除我的名片弹窗 ========== -->
+  <div class="modal-backdrop hidden" id="editBackdrop">
+    <div class="modal modal-wide" role="dialog" aria-modal="true" aria-label="修改名片">
+      <button type="button" class="modal-close" data-close="editBackdrop" aria-label="关闭">✕</button>
+      <div class="modal-h" id="editTitle">修改我的名片</div>
+      <div class="modal-sub" id="editSub"></div>
+
+      <div id="editPickWrap" class="hidden">
+        <div class="pick-row">
+          <select id="e_pick"></select>
+          <input type="text" id="e_code" placeholder="输入修改码" autocomplete="off">
+        </div>
+        <p class="login-note">如果这是你的名片，选好姓名并输入修改码即可载入；修改码在提交成功时显示过。</p>
+      </div>
+
+      <form id="editForm" novalidate>
+        <div class="form-grid">
+          <div class="field" id="e_nameWrap">
+            <label for="e_name">姓名</label>
+            <input type="text" id="e_name" maxlength="40">
+          </div>
+          <div class="field">
+            <label for="e_nickname">昵称 / 称呼</label>
+            <input type="text" id="e_nickname" maxlength="40">
+          </div>
+          <div class="field">
+            <label for="e_hometown">家乡</label>
+            <input type="text" id="e_hometown" maxlength="60">
+          </div>
+          <div class="field">
+            <label for="e_contact">联系方式（仅本班可见）</label>
+            <input type="text" id="e_contact" maxlength="120">
+          </div>
+          <div class="field span2">
+            <label for="e_interests">兴趣爱好</label>
+            <input type="text" id="e_interests" maxlength="200">
+          </div>
+          <div class="field span2">
+            <label for="e_intro">一句话介绍自己</label>
+            <textarea id="e_intro" maxlength="500"></textarea>
+          </div>
+
+          <div class="field span2"><div class="fun-head">🎨 趣味小档案（选填）</div></div>
+          <div class="field">
+            <label for="e_mbti">MBTI</label>
+            <select id="e_mbti">
+              <option value="">没测过 / 保密</option>
+              <option>INTJ</option><option>INTP</option><option>ENTJ</option><option>ENTP</option>
+              <option>INFJ</option><option>INFP</option><option>ENFJ</option><option>ENFP</option>
+              <option>ISTJ</option><option>ISFJ</option><option>ESTJ</option><option>ESFJ</option>
+              <option>ISTP</option><option>ISFP</option><option>ESTP</option><option>ESFP</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="e_catchphrase">口头禅</label>
+            <input type="text" id="e_catchphrase" maxlength="40">
+          </div>
+          <div class="field span2">
+            <label for="e_hiddenSkill">隐藏技能 / 想被发现的才华</label>
+            <input type="text" id="e_hiddenSkill" maxlength="80">
+          </div>
+
+          <div class="field span2" id="e_avatarWrap">
+            <label>头像（不选则保留原头像）</label>
+            <div class="avatar-picker">
+              <div class="avatar-preview" id="e_avatarPrev">👤</div>
+              <div class="avatar-buttons">
+                <label class="btn btn-soft btn-sm" for="e_avatar">📷 更换照片</label>
+                <input type="file" id="e_avatar" accept="image/*" hidden>
+                <button type="button" class="btn btn-danger-ghost hidden" id="e_avatarClear">🧼 用默认头像</button>
+                <p class="hint">可以换照片或选个表情；管理员修改时不改动头像。</p>
+              </div>
+            </div>
+            <div class="emoji-row">
+              <span class="emoji-label">选个表情：</span>
+              <div class="emoji-grid" id="e_avatarEmojiGrid"></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="editSave">💾 保存修改</button>
+          <button type="button" class="btn btn-danger" id="editDelete">🗑 删除我的名片</button>
+        </div>
+        <p class="error-msg" id="editMsg"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========== 管理员弹窗 ========== -->
+  <div class="modal-backdrop hidden" id="adminBackdrop">
+    <div class="modal modal-wide" role="dialog" aria-modal="true" aria-label="管理员">
+      <button type="button" class="modal-close" data-close="adminBackdrop" aria-label="关闭">✕</button>
+
+      <div id="adminLogin">
+        <div class="modal-h">⚙️ 管理员登录</div>
+        <div class="modal-sub">仅限班委使用（正式模式下密码在数据库里，别人看不到）</div>
+        <div class="pick-row">
+          <input type="password" id="adminPw" placeholder="管理员密码" autocomplete="off">
+          <button type="button" class="btn btn-primary" id="adminLoginBtn">登录</button>
+        </div>
+        <p class="login-note" id="adminPwHint"></p>
+        <p class="error-msg" id="adminLoginMsg"></p>
+      </div>
+
+      <div id="adminPanel" class="hidden">
+        <div class="modal-h">⚙️ 管理员面板</div>
+        <div class="modal-sub">「谁还没填」仅你可见；名片管理可改错字、删重复</div>
+
+        <div class="admin-wrap">
+          <div class="admin-card">
+            <h4>📋 班级名单（催填用）</h4>
+            <p class="stat-line" id="adminStat"></p>
+            <textarea id="rosterInput" placeholder="每行一个姓名，粘贴全班名单后点“保存名单”…"></textarea>
+            <div class="admin-actions">
+              <button type="button" class="btn btn-primary btn-sm" id="rosterSaveBtn">💾 保存名单</button>
+            </div>
+            <h4 style="margin-top:14px">😶‍🌫️ 还没填的同学</h4>
+            <div class="unfilled-box" id="unfilledBox"></div>
+            <button type="button" class="mini-btn" id="copyUnfilledBtn">📋 复制未填名单</button>
+          </div>
+
+          <div class="admin-card">
+            <h4>🛠 名片管理</h4>
+            <div class="admin-list" id="adminCardList"></div>
+          </div>
+        </div>
+
+        <div class="admin-card" style="margin-top:16px">
+          <h4>🔑 修改管理员密码</h4>
+          <div class="pw-row">
+            <input type="password" id="pwOld" placeholder="旧密码" autocomplete="off">
+            <input type="password" id="pwNew" placeholder="新密码（≥6位）" autocomplete="off">
+            <button type="button" class="btn btn-soft btn-sm" id="pwSaveBtn">保存</button>
+          </div>
+          <p class="error-msg" id="pwMsg"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 鼠标光晕（桌面端） ========== -->
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+  <!-- ========== 轻提示 ========== -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
