@@ -27,7 +27,7 @@ window.APP_CONFIG = {
     title: '深圳技术大学',
     subtitle: '机械一班自己的名片墙',
     classLabel: '2026级机械一班',
-    targetCount: 40,          // 全班人数，用来显示“已认识 X / 40”
+    targetCount: 41,          // 全班人数，用来显示“已认识 X / 41”
     showContact: true          // 是否允许填写和展示联系方式（仅本班公开）
   },
 
